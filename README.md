@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduLanding</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      line-height: 1.6;
+      background: #f7f9fc;
+      color: #333;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: #0056b3;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-link.active,
+    .nav-link:hover {
+      color: #0056b3;
+    }
+
+    .hero {
+      padding: 5rem 2rem;
+      background: linear-gradient(to right, #007bff, #00c6ff);
+      color: white;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .courses {
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .course-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      margin-top: 2rem;
+    }
+
+    .course-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease-out;
+    }
+
+    .course-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .faq {
+      padding: 4rem 2rem;
+    }
+
+    .accordion-item {
+      background: white;
+      margin-bottom: 1rem;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .accordion-header {
+      background: #0056b3;
+      color: white;
+      padding: 1rem;
+      width: 100%;
+      text-align: left;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 1rem;
+      transition: max-height 0.3s ease;
+      background: #f0f4f8;
+    }
+
+    .accordion-item.open .accordion-content {
+      max-height: 150px;
+      padding: 1rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header id="navbar">
+    <nav>
+      <div class="logo">EduLanding</div>
+      <ul class="nav-links">
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#courses" class="nav-link">Courses</a></li>
+        <li><a href="#faq" class="nav-link">FAQ</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section id="home" class="hero">
+    <h1>Empowering Learners Everywhere</h1>
+    <p>Explore our curated list of courses and get answers to all your questions.</p>
+  </section>
+
+  <section id="courses" class="courses">
+    <h2>Our Top Courses</h2>
+    <div class="course-grid">
+      <div class="course-card fade-in">💻 Web Development</div>
+      <div class="course-card fade-in">📊 Data Science</div>
+      <div class="course-card fade-in">🧠 AI & Machine Learning</div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-header">What is the duration of each course?</button>
+        <div class="accordion-content">Courses range from 4 to 12 weeks depending on the subject.</div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header">Are certificates provided?</button>
+        <div class="accordion-content">Yes, all our courses include a certificate of completion.</div>
+      </div>
+      <div class="accordion-item">
+        <button class="accordion-header">Can I learn at my own pace?</button>
+        <div class="accordion-content">Absolutely! All courses are self-paced with optional live support.</div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Sticky nav active link
+    const navLinks = document.querySelectorAll('.nav-link');
+    window.addEventListener('scroll', () => {
+      let scrollPos = window.scrollY + 150;
+      navLinks.forEach(link => {
+        let section = document.querySelector(link.getAttribute('href'));
+        if (
+          section.offsetTop <= scrollPos &&
+          section.offsetTop + section.offsetHeight > scrollPos
+        ) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // Fade-in course cards on scroll
+    const cards = document.querySelectorAll('.course-card');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, {
+      threshold: 0.2
+    });
+    cards.forEach(card => observer.observe(card));
+
+    // Accordion FAQ
+    const accordions = document.querySelectorAll('.accordion-item');
+    accordions.forEach(item => {
+      const header = item.querySelector('.accordion-header');
+      header.addEventListener('click', () => {
+        item.classList.toggle('open');
+      });
+    });
+  </script>
+</body>
+</html>
